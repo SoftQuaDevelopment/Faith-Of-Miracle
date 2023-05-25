@@ -1,5 +1,6 @@
 package com.quateam.game.faith.story.battle;
 
+import com.quateam.game.faith.game_system.battle_system.Cell;
 import com.quateam.game.faith.model.enemy.Enemy;
 import com.quateam.game.faith.model.player.Player;
 
@@ -13,7 +14,7 @@ public abstract class Playground {
 
     abstract public void setPlayer(Player player);
 
-    abstract public void startBattle();
+    abstract public void startBattle(Cell[][] gameBoard);
 
     abstract public void stopBattle();
 

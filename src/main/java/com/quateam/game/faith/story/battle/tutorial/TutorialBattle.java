@@ -1,8 +1,12 @@
 package com.quateam.game.faith.story.battle.tutorial;
 
+import com.quateam.game.faith.game_system.battle_system.Cell;
+import com.quateam.game.faith.game_system.battle_system.CellType;
 import com.quateam.game.faith.game_system.damage.Damage;
 import com.quateam.game.faith.model.enemy.Enemy;
+import com.quateam.game.faith.model.enemy.Lupizdrik;
 import com.quateam.game.faith.model.player.Player;
+import com.quateam.game.faith.model.player.Warrior;
 import com.quateam.game.faith.story.battle.BattleType;
 import com.quateam.game.faith.story.battle.Playground;
 
@@ -12,44 +16,16 @@ import java.util.List;
 public class TutorialBattle extends Playground {
 
     private List<Enemy> enemyList = new ArrayList<>();
-    private BattleType battleType;
+    public BattleType battleType;
 
     private Player player = null;
-    public boolean isBattle;
+
+    Cell[][] gameBoard;
+
 
     @Override
-    public void startBattle() {
-
-        if(player == null) {
-            System.out.println("Player can't be null");
-            return;
-        }
-
-        if(enemyList.isEmpty()) {
-            System.out.println("There must be at least one enemy on the playground");
-            return;
-        }
-
-        isBattle = true;
-
-        int enemyCount = enemyList.size();
-        System.out.println("Перед тобой появилось " + enemyCount + " врагов");
-
-        int index = 0;
-        for(Enemy enemy : enemyList) {
-            System.out.println(index + " " + enemy.getName());
-            index++;
-        }
-
-        System.out.print("Первый ход за ");
-        //true = player;  false = enemy;
-        if(booleanRand()) {
-            System.out.println("игрока");
-            playerMove();
-        } else {
-            System.out.println("врага");
-            enemyMove();
-        }
+    public void setStatus(BattleType battleType) {
+        this.battleType = battleType;
     }
 
     @Override
@@ -63,24 +39,77 @@ public class TutorialBattle extends Playground {
     }
 
     @Override
-    public void setStatus(BattleType battleType) {
-        this.battleType = battleType;
+    public void startBattle(Cell[][] gameBoard) {
+        if(player == null) {
+            System.out.println("Player is null");
+            return;
+        }
+
+        if(enemyList.isEmpty()) {
+            System.out.println("Enemy is not be 0");
+            return;
+        }
+
+        this.gameBoard = gameBoard;
+        for(int line = 0; line < 9; line++) {
+            for(int column = 0; column < 1; column++) {
+                Cell cell = gameBoard[line][column];
+                if(cell.x == player.getX() & cell.y == player.getY()) {
+                    System.out.print("Игрок на x:" + cell.x + " y:" + cell.y );
+                    cell.setEntity(player);
+                    cell.setCellType(CellType.HAS_PLAYER);
+                    break;
+                }
+            }
+        }
+        System.out.println();
+
+        for(Enemy enemy: enemyList) {
+            for(int line = 0; line < 9; line++) {
+                for(int column = 0; column < 1; column++) {
+                    Cell cell = gameBoard[line][column];
+                    if(cell.x == enemy.getX() & cell.y == enemy.getY()) {
+                        System.out.printf("%s на x:%d y:%d\n", enemy.getName(), cell.x, cell.y);
+                        cell.setEntity(enemy);
+                        cell.setCellType(CellType.HAS_ENEMY);
+                        break;
+                    }
+                }
+            }
+        }
+
+        System.out.println();
+        for(int line = 0; line < 9; line++) {
+            for(int column = 0; column < 1; column++) {
+                Cell cell = gameBoard[line][column];
+                System.out.printf("x:%d y:%d type:%s entity:%s%n", cell.x, cell.y, cell.cellType, cell.entity);
+            }
+        }
+
+        playerMove(2,1);
+    }
+
+    public void playerMove(int x, int y) {
+        Cell cell = null;
+        for(int line = 0; line < 9; line++) {
+            for(int column = 0; column < 1; column++) {
+                Cell currentCell = gameBoard[line][column];
+                if(currentCell.x == x && currentCell.y == y) {
+                    cell = currentCell;
+                }
+            }
+        }
+
+        assert cell != null;
+        Enemy enemy = (Enemy) cell.entity;
+        System.out.println(enemy);
+
+        player.attackOnEnemy(enemy, new Damage(1));
     }
 
     @Override
-    public void stopBattle() { isBattle = false; }
+    public void stopBattle() {
 
-
-    public void enemyMove() {
-        for(Enemy currentEnemy : enemyList) {
-            currentEnemy.attackOnPlayer(player, new Damage(1));
-        }
     }
-
-    public void playerMove() {
-       Enemy enemy = enemyList.get(0);
-       player.attackOnEnemy(enemy, new Damage(1));
-    }
-
 
 }

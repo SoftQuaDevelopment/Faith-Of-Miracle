@@ -1,9 +1,10 @@
 package com.quateam.game.faith.model.player;
 
+import com.quateam.game.faith.game_system.battle_system.Entity;
 import com.quateam.game.faith.game_system.damage.Damage;
 import com.quateam.game.faith.model.enemy.Enemy;
 
-public abstract class Player {
+public abstract class Player implements Entity {
 
     private int level;
     private float healPoint;
