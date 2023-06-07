@@ -1,14 +1,12 @@
-package com.quateam.game.faith.story.battle;
+package com.quateam.game.faith.gameplay.battle;
 
-import com.quateam.game.faith.game_system.battle_system.Cell;
+import com.quateam.game.faith.game_system.battle.Cell;
 import com.quateam.game.faith.model.enemy.Enemy;
 import com.quateam.game.faith.model.player.Player;
 
 import java.util.Random;
 
-public abstract class Playground {
-
-    abstract public void setStatus(BattleType battleType);
+public abstract class Battle {
 
     abstract public void addEnemy(Enemy enemy);
 

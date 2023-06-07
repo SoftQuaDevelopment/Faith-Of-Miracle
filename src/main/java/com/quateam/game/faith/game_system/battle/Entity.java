@@ -1,4 +1,4 @@
-package com.quateam.game.faith.game_system.battle_system;
+package com.quateam.game.faith.game_system.battle;
 
 public interface Entity {
     void setX(int x);

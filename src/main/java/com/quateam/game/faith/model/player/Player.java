@@ -1,20 +1,36 @@
 package com.quateam.game.faith.model.player;
 
-import com.quateam.game.faith.game_system.battle_system.Entity;
+import com.quateam.game.faith.game_system.battle.Entity;
 import com.quateam.game.faith.game_system.damage.Damage;
+import com.quateam.game.faith.game_system.inventory.Inventory;
 import com.quateam.game.faith.model.enemy.Enemy;
+import com.quateam.game.faith.model.item.Item;
 
-public abstract class Player implements Entity {
+import java.util.List;
+
+public class Player implements Entity {
 
     private int level;
     private float healPoint;
     private float armorPoint;
-    private int money;
+    private int x;
+    private int y;
+
+    private final Inventory inventory;
 
     public Player(int level, float healPoint, float armorPoint) {
         this.level = level;
         this.healPoint = healPoint;
         this.armorPoint = armorPoint;
+        inventory = new Inventory();
+    }
+
+    public List<Item> getInventory() {
+        return inventory.getInventory();
+    }
+
+    public void addItem(Item item) {
+        inventory.addItem(item);
     }
 
     public void attackOnEnemy(Enemy enemy, Damage damage) {
@@ -36,4 +52,23 @@ public abstract class Player implements Entity {
         System.out.println("ap: " + armorPoint);
     }
 
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public int getX() {
+        return this.x;
+    }
+
+    @Override
+    public int getY() {
+        return this.y;
+    }
 }

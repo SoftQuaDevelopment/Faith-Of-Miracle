@@ -1,8 +1,8 @@
 package com.quateam.game.faith.model.enemy;
 
-import com.quateam.game.faith.game_system.battle_system.Entity;
+import com.quateam.game.faith.game_system.battle.Entity;
 import com.quateam.game.faith.game_system.damage.Damage;
-import com.quateam.game.faith.game_system.Location;
+import com.quateam.game.faith.game_system.location.Location;
 import com.quateam.game.faith.model.player.Player;
 
 public abstract class Enemy implements Entity {
