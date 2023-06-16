@@ -8,7 +8,8 @@ import com.quateam.game.faith.model.item.weapon.WeaponType;
 public abstract class Sword extends Weapon {
 
 
-    public Sword(String itemName, String description, ItemRarity itemRarity, float price, float baseDamage, WeaponType weaponType, DamageType damageType) {
-        super(itemName, description, itemRarity, price, baseDamage, weaponType.HAND, damageType.PHYSIC);
+    public Sword(String itemName, String description, ItemRarity itemRarity,
+                 float price, float baseDamage) {
+        super(itemName, description, itemRarity, price, baseDamage, WeaponType.HAND, DamageType.PHYSIC);
     }
 }
