@@ -7,5 +7,7 @@ public enum ArmorTypes {
     SHIELD, //ЩИТ
     BRACES, //НАРУЧИ
     BOOTS, //БОТИНКИ
-    CLOAK //ПЛАЩ
+    CLOAK, //ПЛАЩ
+
+    UNKNOWN_ARMOR_TYPE //Неизвестный тип (не допускается)
 }

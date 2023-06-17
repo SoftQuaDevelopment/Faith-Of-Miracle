@@ -61,6 +61,7 @@ public abstract class Armor extends Item {
 
         assert armorHealPoints > 0;
         this.armorHealPoints = armorHealPoints;
+        assert armorType != ArmorTypes.UNKNOWN_ARMOR_TYPE;
         this.armorType = armorType;
         this.armorFeatureType = armorFeatureType;
 
@@ -74,6 +75,133 @@ public abstract class Armor extends Item {
             this.reductionTimeSeconds = reductionTimeSeconds;
         }
     }
+
+    public static float syncArmorDamageReduction(ItemRarity itemRarity, ArmorTypes armorType){
+        if (armorType == ArmorTypes.CLOAK || armorType == ArmorTypes.SHIELD){
+            return 100.0f;
+        }
+        float damageReduction = 0;
+        switch (itemRarity){
+            case ELEMENTARY: damageReduction = 10.0f;
+            case RELICT: damageReduction = 20.0f;
+            case HRENASITOVIY: damageReduction = 40.0f;
+            case MYSTICAL: damageReduction = 80.0f;
+            case STORY: damageReduction = 100.0f;
+        }
+        return damageReduction;
+    }
+
+    public static float syncArmorHealPoints(ItemRarity itemRarity, ArmorTypes armorType){
+        float healPoints = 0;
+        if (armorType == ArmorTypes.CLOAK || armorType == ArmorTypes.SHIELD){
+            switch (itemRarity){
+                case ELEMENTARY: healPoints = 25.0f;
+                case RELICT: healPoints = 50.0f;
+                case HRENASITOVIY: healPoints = 100.0f;
+                case MYSTICAL: healPoints = 200.0f;
+                case STORY: healPoints = 400.0f;
+            }
+            return healPoints;
+        }
+        switch (itemRarity){
+            case ELEMENTARY: healPoints = 50.0f;
+            case RELICT: healPoints = 100.0f;
+            case HRENASITOVIY: healPoints = 200.0f;
+            case MYSTICAL: healPoints = 400.0f;
+            case STORY: healPoints = 800.0f;
+        }
+        return healPoints;
+    }
+
+    public static String syncArmorName(ItemRarity itemRarity, ArmorTypes armorType){
+        String name = "---";
+        switch (armorType){
+            case BOOTS -> {
+                switch (itemRarity){
+                    case ELEMENTARY: name = "Элементарные бутcы";
+                    case RELICT: name = "Реликтовые бутсы";
+                    case HRENASITOVIY: name = "Хренаситовые бутсы";
+                    case MYSTICAL: name = "Мистические бутсы";
+                    case STORY: name = "Исторические бутсы";
+                }
+            }
+            case BRACES -> {
+                switch (itemRarity){
+                    case ELEMENTARY: name = "Элементарные наручи";
+                    case RELICT: name = "Реликтовые наручи";
+                    case HRENASITOVIY: name = "Хренаситовые наручи";
+                    case MYSTICAL: name = "Мистические наручи";
+                    case STORY: name = "Исторические наручи";
+                }
+            }
+            case CLOAK -> {
+                switch (itemRarity){
+                    case ELEMENTARY: name = "Элементарный плащ";
+                    case RELICT: name = "Реликтовый плащ";
+                    case HRENASITOVIY: name = "Хренаситовый плащ";
+                    case MYSTICAL: name = "Мистический плащ";
+                    case STORY: name = "Исторический плащ";
+                }
+            }
+            case GREAVES -> {
+                switch (itemRarity){
+                    case ELEMENTARY: name = "Элементарные поножи";
+                    case RELICT: name = "Реликтовые поножи";
+                    case HRENASITOVIY: name = "Хренаситовые поножи";
+                    case MYSTICAL: name = "Мистические поножи";
+                    case STORY: name = "Исторические поножи";
+                }
+            }
+            case HELMET -> {
+                switch (itemRarity){
+                    case ELEMENTARY: name = "Элементарный шлем";
+                    case RELICT: name = "Реликтовый шлем";
+                    case HRENASITOVIY: name = "Хренаситовый шлем";
+                    case MYSTICAL: name = "Мистический шлем";
+                    case STORY: name = "Исторический шлем";
+                }
+            }
+            case SHIELD -> {
+                switch (itemRarity){
+                    case ELEMENTARY: name = "Элементарный щит";
+                    case RELICT: name = "Реликтовый щит";
+                    case HRENASITOVIY: name = "Хренаситовый щит";
+                    case MYSTICAL: name = "Мистический щит";
+                    case STORY: name = "Исторический щит";
+                }
+            }
+            case VEST -> {
+                switch (itemRarity){
+                    case ELEMENTARY: name = "Элементарный жилет";
+                    case RELICT: name = "Реликтовый жилет";
+                    case HRENASITOVIY: name = "Хренаситовый жилет";
+                    case MYSTICAL: name = "Мистический жилет";
+                    case STORY: name = "Исторический жилет";
+                }
+            }
+
+
+        }
+        return name;
+
+    }
+
+    public static String syncArmorDescription(ItemRarity itemRarity, ArmorTypes armorType){
+        String desc = "---";
+        String name = syncArmorName(itemRarity, armorType);
+        float damageReduction = syncArmorDamageReduction(itemRarity, armorType);
+        switch (armorType){
+            case BOOTS -> desc = name + " снижают урон в ступни на " + damageReduction + "%";
+            case BRACES -> desc = name + " снижают урон в руки на " + damageReduction + "%";
+            case GREAVES -> desc = name + " снижают урон в ноги на " + damageReduction + "%";
+            case HELMET -> desc = name + " снижает урон в голову на " + damageReduction + "%";
+            case VEST -> desc = name + " снижает урон в туловище на " + damageReduction + "%";
+            case SHIELD -> desc = name + " снижает урон в живот и грудь на " + damageReduction + "%. Щит может работать поверх жилета.";
+            case CLOAK -> desc = name + " снижает урон в спину на " + damageReduction + "%. Плащ может работать поверх жилета";
+        }
+        return desc;
+    }
+
 
     public void armorIsBroken() {
         if (this.armorHealPoints <= 0) {
@@ -105,7 +233,7 @@ public abstract class Armor extends Item {
      * не разрушена полностью.
      **/
     public void fix() {
-        assert this.armorBroken = false;
+        assert this.armorBroken == false;
         assert this.armorHealPoints > 0;
     }
 
@@ -114,7 +242,7 @@ public abstract class Armor extends Item {
      * метод armorTimeIsUp(), чтобы синхронизировать все значения, связанные с временем действия и состоянием брони.
      */
     public void armorTimeIsUp() {
-        assert this.armorBroken = false;
+        assert this.armorBroken == false;
         assert this.armorHealPoints > 0;
         if (isTemporary) {
             isTemporary = false;
@@ -127,20 +255,20 @@ public abstract class Armor extends Item {
     }
 
     public void setArmorHealPoints(float armorHealPoints) {
-        assert this.armorBroken = false;
+        assert this.armorBroken == false;
         assert armorHealPoints > 0;
         this.armorHealPoints = armorHealPoints;
     }
 
     public void setDamageReduction(float damageReduction) {
-        assert this.armorBroken = false;
+        assert this.armorBroken == false;
         assert this.armorHealPoints > 0;
         assert damageReduction > 0;
         this.damageReduction = damageReduction;
     }
 
     public void setReductionTimeSeconds(float reductionTimeSeconds) {
-        assert this.armorBroken = false;
+        assert this.armorBroken == false;
         assert this.armorHealPoints > 0;
         if (reductionTimeSeconds <= 0) {
             this.isTemporary = false;
@@ -151,7 +279,7 @@ public abstract class Armor extends Item {
     }
 
     public void setArmorFeatureType(ArmorFeatureTypes armorFeatureType) {
-        assert this.armorBroken = false;
+        assert this.armorBroken == false;
         assert this.armorHealPoints > 0;
         this.armorFeatureType = armorFeatureType;
     }
@@ -183,5 +311,7 @@ public abstract class Armor extends Item {
     public boolean isTemporary() {
         return isTemporary;
     }
+
+    public abstract boolean isArmorFixed();
 
 }
